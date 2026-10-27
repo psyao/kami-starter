@@ -13,7 +13,7 @@ php artisan kami:install
 php artisan make:filament-user
 ```
 
-The GitHub URL works until the starter kit is on Packagist; the installer clones it with Node. The admin is at `/admin`, for the User `make:filament-user` creates. `kami:install` also serves every later deploy: run it after each one. `php artisan boost:install` gives a coding agent Laravel's and Kami's guidelines.
+The GitHub URL works until the starter kit is on Packagist; the installer clones it with Node. The admin is at `/admin`, for the User `make:filament-user` creates. To put the site online and deploy it again, follow [Kami's deployment guide](https://github.com/psyao/kami/blob/main/docs/guide/deployment.md). `php artisan boost:install` gives a coding agent Laravel's and Kami's guidelines.
 
 ## What it wires
 
