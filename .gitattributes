@@ -6,6 +6,4 @@
 *.md diff=markdown
 *.php diff=php
 
-/.github export-ignore
-CHANGELOG.md export-ignore
-.styleci.yml export-ignore
+# Nothing is export-ignored: `composer create-project` unpacks this archive, and the site needs all of it, CI workflow included.

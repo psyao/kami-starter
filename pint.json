@@ -1,0 +1,3 @@
+{
+    "extend": "vendor/psyao/kami/pint.json"
+}
