@@ -1,0 +1,9 @@
+* text=auto eol=lf
+
+*.blade.php diff=html
+*.css diff=css
+*.html diff=html
+*.md diff=markdown
+*.php diff=php
+
+# Nothing is export-ignored: `composer create-project` unpacks this archive, and the site needs all of it, CI workflow included.

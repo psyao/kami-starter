@@ -1,0 +1,16 @@
+includes:
+    - vendor/larastan/larastan/extension.neon
+    - vendor/phpstan/phpstan-deprecation-rules/rules.neon
+
+# Kami's level, with no baseline. An `ignoreErrors` entry names its identifier and path, with a comment saying why.
+parameters:
+    level: max
+    paths:
+        - app
+        - bootstrap
+        - config
+        - database
+        - routes
+    excludePaths:
+        - bootstrap/cache
+    checkModelProperties: true
