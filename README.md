@@ -1,6 +1,6 @@
 # Kami starter kit
 
-A Laravel application wired for [Kami](https://github.com/psyao/kami), the Laravel and Filament CMS at home on shared hosting. Once created, the site owns this code: nothing is ever synced back from here, and everything existing sites must receive ships in the `psyao/kami` package.
+A Laravel application wired for [Psyao Kami](https://github.com/psyao/kami), the Laravel and Filament CMS at home on shared hosting. Once created, the site owns this code: nothing is ever synced back from here, and everything existing sites must receive ships in the `psyao/kami` package.
 
 ## Create a site
 
