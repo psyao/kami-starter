@@ -2,7 +2,7 @@
     "$schema": "https://getcomposer.org/schema.json",
     "name": "psyao/kami-starter",
     "type": "project",
-    "description": "A Laravel application wired for Kami, the Laravel and Filament CMS.",
+    "description": "A Laravel application wired for Psyao Kami, the Laravel and Filament CMS.",
     "keywords": ["laravel", "filament", "cms", "kami"],
     "homepage": "https://github.com/psyao/kami-starter",
     "license": "MIT",
