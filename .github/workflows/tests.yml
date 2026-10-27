@@ -1,4 +1,5 @@
-name: ci
+# Named tests.yml: `laravel new --pest` edits this file, and writes an empty one under that name when it is missing.
+name: tests
 
 on:
   pull_request:

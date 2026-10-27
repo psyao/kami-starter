@@ -20,7 +20,7 @@ The admin is at `/admin`. `kami:install` also serves every later deploy: run it 
 - `app/Models/User.php`: panel access for every User until Kami's Roles land.
 - `public/.htaccess`: no trailing-slash redirect before Laravel, so a former URL costs one 301.
 - `resources/views/errors/`: one layout for every error page, without Vite assets.
-- `.github/workflows/ci.yml`: Pint, Larastan, Rector and the tests on every pull request, and the Vite + Tailwind build as an artifact, so the server never runs Node.
+- `.github/workflows/tests.yml`: Pint, Larastan, Rector and the tests on every pull request, and the Vite + Tailwind build as an artifact, so the server never runs Node.
 - `lefthook.yml`, `pint.json`, `rector.php`, `phpstan.neon.dist`: Kami's rules and level, from the package. Hooks install with `composer install` once the site is a Git repository.
 - `tests/ArchTest.php`: Filament stays in `app/Filament` and `app/Providers/Filament`, so a Filament major touches only them.
 
