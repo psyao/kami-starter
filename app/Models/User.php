@@ -28,7 +28,7 @@ class User extends Authenticatable implements FilamentUser
      */
     public function canAccessPanel(Panel $panel): bool
     {
-        // ponytail: every User is staff until Kami's Roles land (M2); then only a Kami Role holder gets in.
+        // ponytail: every User is staff until Kami ships Roles; then only a Kami Role holder gets in.
         return true;
     }
 
