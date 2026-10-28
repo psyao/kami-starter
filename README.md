@@ -7,13 +7,13 @@ A Laravel application wired for [Psyao Kami](https://github.com/psyao/kami), the
 Requirements: PHP 8.5 with the extensions [Kami lists](https://github.com/psyao/kami/blob/main/docs/guide/installation.md#requirements), Composer, and, on the developer's machine only, Node for the front-end build and [gitleaks](https://github.com/gitleaks/gitleaks) for the commit hook (`brew install gitleaks`).
 
 ```bash
-laravel new site --using=https://github.com/psyao/kami-starter
+laravel new site --using=psyao/kami-starter
 cd site
 php artisan kami:install
 php artisan make:filament-user
 ```
 
-The GitHub URL works until the starter kit is on Packagist; the installer clones it with Node. The admin is at `/admin`, for the User `make:filament-user` creates. To put the site online and deploy it again, follow [Kami's deployment guide](https://github.com/psyao/kami/blob/main/docs/guide/deployment.md). Accept Laravel Boost when the installer offers it, or run `php artisan boost:install` later: either gives a coding agent Laravel's, Filament's and Kami's guidelines and skills.
+The admin is at `/admin`, for the User `make:filament-user` creates. To put the site online and deploy it again, follow [Kami's deployment guide](https://github.com/psyao/kami/blob/main/docs/guide/deployment.md). Accept Laravel Boost when the installer offers it, or run `php artisan boost:install` later: either gives a coding agent Laravel's, Filament's and Kami's guidelines and skills.
 
 ## What it wires
 
