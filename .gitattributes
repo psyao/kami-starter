@@ -6,4 +6,6 @@
 *.md diff=markdown
 *.php diff=php
 
-# Nothing is export-ignored: `composer create-project` unpacks this archive, and the site needs all of it, CI workflow included.
+# `composer create-project` unpacks this archive, and the site needs all of it, CI workflow included.
+# Only a stray composer.lock stays out: it would pin every new site to an old Kami. A site commits its own.
+/composer.lock export-ignore
