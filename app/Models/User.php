@@ -13,14 +13,17 @@ use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Psyao\Kami\Users\HasKamiRoles;
+use Psyao\Kami\Users\KamiUser;
 
 #[Fillable(['name', 'email', 'password'])]
 #[Hidden(['password', 'remember_token'])]
-class User extends Authenticatable implements FilamentUser
+class User extends Authenticatable implements FilamentUser, KamiUser
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory;
 
+    use HasKamiRoles;
     use Notifiable;
 
     /**
@@ -28,8 +31,8 @@ class User extends Authenticatable implements FilamentUser
      */
     public function canAccessPanel(Panel $panel): bool
     {
-        // ponytail: every User is staff until Kami ships Roles; then only a Kami Role holder gets in.
-        return true;
+        // Only staff get in: a User holding a Kami Role. What each may do there is a Permission check (Kami's Users and roles guide).
+        return $this->kamiRoles() !== [];
     }
 
     /**

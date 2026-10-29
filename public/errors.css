@@ -1,0 +1,5 @@
+/* resources/views/errors/minimal.blade.php: a plain file, outside Vite, so an error page renders even when the build is broken. */
+body { margin: 0; min-height: 100vh; display: grid; place-items: center; font-family: system-ui, sans-serif; color: #18181b; background: #fff; }
+main { padding: 1.5rem; text-align: center; }
+h1 { margin: 0; font-size: 1.125rem; font-weight: 500; }
+@media (prefers-color-scheme: dark) { body { color: #fafafa; background: #18181b; } }
