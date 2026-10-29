@@ -4,8 +4,6 @@
     <article>
         <h1 class="text-3xl font-semibold">{{ $entry->title }}</h1>
 
-        @if (filled($entry->body))
-            <p class="mt-6 whitespace-pre-line leading-relaxed" @if ($lang = $entry->fallbackLocale('body'))lang="{{ $lang }}"@endif>{{ $entry->body }}</p>
-        @endif
+        <p class="mt-6 whitespace-pre-line leading-relaxed" @if ($lang = $entry->fallbackLocale('body'))lang="{{ $lang }}"@endif>{{ $entry->body }}</p>
     </article>
 </x-layouts.site>
