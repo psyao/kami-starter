@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-// Les libellés de l'admin pour chaque Content Type de config/kami.php, par handle.
+// The admin's labels for each Content Type in config/kami.php, by handle.
 return [
     'page' => [
         'label' => 'Page',

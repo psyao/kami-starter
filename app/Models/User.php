@@ -31,7 +31,7 @@ class User extends Authenticatable implements FilamentUser, KamiUser
      */
     public function canAccessPanel(Panel $panel): bool
     {
-        // Only staff get in: a User holding a Kami Role. What each may do there is a Permission check (Kami's ADR 0014).
+        // Only staff get in: a User holding a Kami Role. What each may do there is a Permission check (Kami's Users and roles guide).
         return $this->kamiRoles() !== [];
     }
 

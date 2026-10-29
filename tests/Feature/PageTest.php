@@ -20,7 +20,7 @@ beforeEach(function (): void {
     $save->handle(Page::class, ['title' => 'Welcome', 'status' => 'published'], $page, 'en');
 });
 
-it('renders a Page in the layout in each Locale', function (string $path, string $lang, string $title): void {
+it('renders a Page in the layout in each Locale', function (string $path, string $lang, string $title, string $skipLink): void {
     $response = $this->get($path)
         ->assertOk()
         ->assertHeader('Content-Security-Policy')
@@ -29,13 +29,13 @@ it('renders a Page in the layout in each Locale', function (string $path, string
     $html = HTMLDocument::createFromString($response->getContent(), LIBXML_NOERROR);
 
     expect($html->documentElement->getAttribute('lang'))->toBe($lang)
-        ->and($html->querySelector('a[href="#main"]')?->textContent)->not->toBeEmpty()
+        ->and(trim($html->querySelector('a[href="#main"]')?->textContent ?? ''))->toBe($skipLink)
         ->and($html->querySelectorAll('header, main#main, footer'))->toHaveCount(3)
         ->and($html->querySelector('main h1')?->textContent)->toBe($title)
         ->and($html->querySelectorAll('script, style, [style]'))->toHaveCount(0);
 })->with([
-    'French, the default Locale' => ['/bienvenue', 'fr', 'Bienvenue'],
-    'English' => ['/en/welcome', 'en', 'Welcome'],
+    'French, the default Locale' => ['/bienvenue', 'fr', 'Bienvenue', 'Aller au contenu'],
+    'English' => ['/en/welcome', 'en', 'Welcome', 'Skip to content'],
 ]);
 
 it('escapes the body and marks its Fallback with lang', function (): void {
