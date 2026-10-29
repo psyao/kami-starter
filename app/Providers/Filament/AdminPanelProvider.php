@@ -58,6 +58,8 @@ class AdminPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
+                // Kami's admin CSP and security headers, with the nonce Filament's inline scripts carry.
+                'kami.security-headers:admin',
             ])
             ->authMiddleware([
                 Authenticate::class,

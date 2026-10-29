@@ -8,10 +8,10 @@
     "license": "MIT",
     "require": {
         "php": "^8.5",
-        "filament/filament": "^5.8.3",
+        "filament/filament": "^5.10",
         "laravel/framework": "^13.32",
         "laravel/tinker": "^3.0",
-        "psyao/kami": "^0.1"
+        "psyao/kami": "dev-main"
     },
     "require-dev": {
         "driftingly/rector-laravel": "^2.7",
@@ -47,7 +47,7 @@
             "composer install",
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
             "@php artisan key:generate",
-            "@php artisan kami:install --no-interaction",
+            "@php artisan kami:install",
             "npm install --ignore-scripts",
             "npm run build"
         ],

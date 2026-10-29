@@ -1,5 +1,6 @@
 {{-- Every error page extends this layout, Laravel's own 403, 404, 500… included: restyle it to the site's theme.
-     It loads no Vite asset, so it still renders when the build or the application is broken. --}}
+     It loads no Vite asset, so it still renders when the build or the application is broken. Its styles sit in
+     public/errors.css: Kami's CSP blocks an inline <style>. --}}
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
@@ -9,12 +10,7 @@
 
         <title>@yield('title')</title>
 
-        <style>
-            body { margin: 0; min-height: 100vh; display: grid; place-items: center; font-family: system-ui, sans-serif; color: #18181b; background: #fff; }
-            main { padding: 1.5rem; text-align: center; }
-            h1 { margin: 0; font-size: 1.125rem; font-weight: 500; }
-            @media (prefers-color-scheme: dark) { body { color: #fafafa; background: #18181b; } }
-        </style>
+        <link rel="stylesheet" href="{{ asset('errors.css') }}">
     </head>
     <body>
         <main>

@@ -2,8 +2,10 @@
 
 declare(strict_types=1);
 
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Route;
+use Psyao\Kami\Facades\Kami;
 
-Route::get('/', fn (): Factory | View => view('welcome'));
+Route::view('/', 'home');
+
+// Last: one fallback route answers every Entry's Path, so the routes above always win.
+Kami::routes();
