@@ -14,8 +14,6 @@ php artisan kami:install
 
 `kami:install` asks for the first administrator, who signs in at `/admin`; so does `composer setup`, which also builds the front. Without a terminal, pass the administrator's details as Kami's [installation guide](https://github.com/psyao/kami/blob/main/docs/guide/installation.md#the-first-user) shows. Create a Page in the admin and publish it: it answers at its own address, `/about` in French and `/en/about` in English.
 
-Until Kami 0.2.0, the starter kit requires Kami's `main` branch (`"psyao/kami": "dev-main"`): its wiring is not released yet ([psyao/kami#130](https://github.com/psyao/kami/issues/130)). Once 0.2.0 is out, change it to `"^0.2"` in your site's `composer.json` and run `composer update psyao/kami`.
-
 To put the site online and deploy it again, follow [Kami's deployment guide](https://github.com/psyao/kami/blob/main/docs/guide/deployment.md). Accept Laravel Boost when the installer offers it, or run `php artisan boost:install` later: either gives a coding agent Laravel's, Filament's and Kami's guidelines and skills.
 
 ## What it wires
