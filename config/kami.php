@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
+use App\Content\Home;
 use App\Content\Page;
+use App\Content\Tag;
 
 return [
 
@@ -10,7 +12,9 @@ return [
     | The site's Content Types: `final` classes extending `Psyao\Kami\Content\ContentType` (ADR 0007).
     */
     'types' => [
+        Home::class,
         Page::class,
+        Tag::class,
     ],
 
     /*
