@@ -20,21 +20,26 @@ final class DemoSeeder extends Seeder
 {
     public function run(SaveEntry $save): void
     {
-        // A second run would refuse the Page's slug, and overwrite what editors changed on Home.
+        // A second run would refuse the Page's slug.
         if (Entry::query()->withUnpublished()->ofType(Page::class)->exists()) {
             return;
         }
 
-        $home = $save->handle(Home::class, [
-            'title' => 'Bienvenue',
-            'status' => 'published',
-            'intro' => 'Kami est installé. Cette page est un Singleton : modifiez-la dans l’admin.',
-        ], Entry::query()->withUnpublished()->ofType(Home::class)->first());
-        $save->handle(Home::class, [
-            'title' => 'Welcome',
-            'status' => 'published',
-            'intro' => 'Kami is installed. This page is a Singleton: edit it in the admin.',
-        ], $home, 'en');
+        $home = Entry::query()->withUnpublished()->ofType(Home::class)->first();
+
+        // A Home already published is an editor's: the demo leaves it alone.
+        if ($home?->status !== 'published') {
+            $home = $save->handle(Home::class, [
+                'title' => 'Bienvenue',
+                'status' => 'published',
+                'intro' => 'Kami est installé. Cette page est un Singleton : modifiez-la dans l’admin.',
+            ], $home);
+            $save->handle(Home::class, [
+                'title' => 'Welcome',
+                'status' => 'published',
+                'intro' => 'Kami is installed. This page is a Singleton: edit it in the admin.',
+            ], $home, 'en');
+        }
 
         $tags = array_map(
             fn (string $title): string => $save->handle(Tag::class, ['title' => $title])->id,

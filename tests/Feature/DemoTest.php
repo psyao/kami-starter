@@ -2,9 +2,11 @@
 
 declare(strict_types=1);
 
+use App\Content\Home;
 use Database\Seeders\DemoSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
+use Psyao\Kami\Content\Actions\SaveEntry;
 use Psyao\Kami\Content\Entry;
 
 uses(RefreshDatabase::class);
@@ -48,6 +50,15 @@ it('touches nothing on a second run', function (): void {
     $this->seed(DemoSeeder::class);
 
     expect(Entry::query()->withUnpublished()->count())->toBe($entries);
+});
+
+it('leaves a Home an editor published alone', function (): void {
+    $home = Entry::query()->withUnpublished()->ofType(Home::class)->first();
+    resolve(SaveEntry::class)->handle(Home::class, ['title' => 'Edited', 'status' => 'published'], $home);
+
+    $this->seed(DemoSeeder::class);
+
+    $this->get('/')->assertOk()->assertSee('Edited');
 });
 
 it('leaves kami:doctor nothing to report on the types it declares', function (): void {
