@@ -58,6 +58,14 @@ jobs:
         if: ${{ !cancelled() && steps.install.outcome == 'success' }}
         run: php artisan test --ci
 
+      # What Kami or Filament publishes must be ignored, or a new site commits a copy. The kit ships no lock file.
+      - name: Nothing left untracked
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
+        run: |
+          dirty=$(git status --porcelain -- . ':!composer.lock')
+          echo "$dirty"
+          test -z "$dirty"
+
   assets:
     name: Front assets (Vite, Tailwind)
     runs-on: ubuntu-latest
