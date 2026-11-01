@@ -12,7 +12,9 @@ cd site
 php artisan kami:install
 ```
 
-`kami:install` asks for the first administrator, who signs in at `/admin`; so does `composer setup`, which also builds the front. Without a terminal, pass the administrator's details as Kami's [installation guide](https://github.com/psyao/kami/blob/main/docs/guide/installation.md#the-first-user) shows. Create a Page in the admin and publish it: it answers at its own address, `/about` in French and `/en/about` in English.
+`kami:install` asks for the first administrator, who signs in at `/admin`; so does `composer setup`, which also builds the front. Without a terminal, pass the administrator's details as Kami's [installation guide](https://github.com/psyao/kami/blob/main/docs/guide/installation.md#the-first-user) shows. The home page answers 404 until it is published: publish it in the admin, or seed the demo with `php artisan db:seed --class=DemoSeeder`, which `composer setup` runs. The demo publishes it and a Page with two Tags, at `/about` in French and `/en/about` in English.
+
+Until Kami 0.3.0 this kit requires `psyao/kami: dev-main`, as it uses what only Kami's `main` ships: switch your site to `^0.3` once it is released.
 
 To put the site online and deploy it again, follow [Kami's deployment guide](https://github.com/psyao/kami/blob/main/docs/guide/deployment.md). Accept Laravel Boost when the installer offers it, or run `php artisan boost:install` later: either gives a coding agent Laravel's, Filament's and Kami's guidelines and skills.
 
@@ -22,9 +24,10 @@ To put the site online and deploy it again, follow [Kami's deployment guide](htt
 - `bootstrap/app.php`: Kami's front security headers and CSP on the `web` group too.
 - `app/Providers/Filament/AdminPanelProvider.php`: the panel, with `KamiPlugin`, strict authorization, Kami's local avatar provider and Kami's admin security headers.
 - `app/Models/User.php`: `KamiUser` with `HasKamiRoles`; only a User holding a Kami Role gets into the admin.
-- `config/kami.php`: the example `Page` type (`app/Content/Page.php`), two Locales (`fr`, the default, and `en`) and the `administrator` Role. `database/migrations/*_create_kami_type_page_table.php` is the Page's table, written by `kami:make:migration`.
-- `lang/{en,fr}/kami-types.php`: the admin's labels for the Page; `lang/fr.json`: the layout's strings in French.
-- `resources/views/components/layouts/site.blade.php`: a minimal accessible layout (`lang`, skip link, landmarks), built by Vite and Tailwind, with no JavaScript, no web font and nothing inline. `resources/views/kami/page.blade.php` renders a Page in it.
+- `config/kami.php`: three example types in `app/Content`, a `Home` Singleton at `/`, a `Page` and the `Tag` Taxonomy its `tags` Field links to; two Locales (`fr`, the default, and `en`) and the `administrator` Role. `database/migrations/*_create_kami_type_*_table.php` are their tables, written by `kami:make:migration`; a type with no Field, as `Tag`, has none.
+- `database/seeders/DemoSeeder.php`: the demo, through `SaveEntry`. Delete it when the site has its own content. To remove a type you have migrated, delete it from `config/kami.php` and drop its table with `ContentMigrator::dropType()` in a migration.
+- `lang/{en,fr}/kami-types.php`: the admin's labels for the types; `lang/fr.json`: the layout's strings in French.
+- `resources/views/components/layouts/site.blade.php`: a minimal accessible layout (`lang`, skip link, landmarks), built by Vite and Tailwind, with no JavaScript, no web font and nothing inline. `resources/views/kami/home.blade.php` and `page.blade.php` render the types in it.
 - `public/.htaccess`: no trailing-slash redirect before Laravel, so a former URL costs one 301.
 - `resources/views/errors/`: one layout for every error page, without Vite assets; its styles are in `public/errors.css`.
 - `.github/workflows/tests.yml`: Pint, Larastan, Rector and the tests on every pull request, and the Vite + Tailwind build as an artifact, so the server never runs Node.

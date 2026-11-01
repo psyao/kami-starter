@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Content;
 
 use Psyao\Kami\Content\ContentType;
+use Psyao\Kami\Content\Fields\Terms;
 use Psyao\Kami\Content\Fields\Textarea;
 
 /**
@@ -19,6 +20,7 @@ final class Page extends ContentType
     {
         return [
             Textarea::make('body'),
+            Terms::make('tags')->of(Tag::class),
         ];
     }
 }

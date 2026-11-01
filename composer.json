@@ -11,7 +11,7 @@
         "filament/filament": "^5.10",
         "laravel/framework": "^13.32",
         "laravel/tinker": "^3.0",
-        "psyao/kami": "^0.2"
+        "psyao/kami": "dev-main"
     },
     "require-dev": {
         "driftingly/rector-laravel": "^2.7",
@@ -48,6 +48,7 @@
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
             "@php artisan key:generate",
             "@php artisan kami:install",
+            "@php artisan db:seed --class=DemoSeeder",
             "npm install --ignore-scripts",
             "npm run build"
         ],
