@@ -13,6 +13,8 @@
         @vite('resources/css/app.css')
     </head>
     <body class="flex min-h-screen flex-col bg-white font-sans text-zinc-900 antialiased dark:bg-zinc-900 dark:text-zinc-50">
+        <x-kami::preview-banner />
+
         <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:rounded focus:bg-white focus:px-4 focus:py-2 focus:text-zinc-900 focus:underline">
             {{ __('Skip to content') }}
         </a>
