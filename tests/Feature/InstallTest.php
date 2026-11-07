@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Models\User;
+use Illuminate\Support\Facades\Http;
 
 beforeEach(fn () => $_SERVER['KAMI_ADMIN_PASSWORD'] = 'correct-horse-battery');
 afterEach(function (): void {
@@ -20,6 +21,8 @@ it('installs Kami on a fresh project with its first administrator', function ():
         ->and($ada->kamiRoles())->toBe(['administrator']);
 
     $this->get('/admin/login')->assertOk()->assertHeader('Content-Security-Policy');
+    // The doctor's header probe would reach whatever serves APP_URL on this machine.
+    Http::fake(['*' => Http::failedConnection()]);
     $this->artisan('kami:doctor', ['--strict' => true])->assertSuccessful();
 });
 

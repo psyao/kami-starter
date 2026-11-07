@@ -22,6 +22,7 @@
 /public/hot
 /public/js/filament
 /public/js/psyao
+/public/media
 /public/storage
 /storage/*.key
 /storage/pail
