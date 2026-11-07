@@ -23,6 +23,18 @@ return [
     */
     'roles' => [
         'administrator' => ['kami.*'],
+        'editor' => [
+            'kami.entries.*.view',
+            'kami.entries.*.create',
+            'kami.entries.*.update',
+            'kami.entries.*.reorder',
+            'kami.entries.*.publish',
+            'kami.entries.*.share-preview',
+            'kami.entries.*.delete',
+            'kami.entries.*.restore',
+            'kami.media.*',
+            'kami.menus.manage',
+        ],
     ],
 
     /*
