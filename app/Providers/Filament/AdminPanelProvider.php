@@ -31,6 +31,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
+            ->passwordReset()
             ->plugin(KamiPlugin::make())
             // A Resource without a policy method throws instead of allowing everyone: access is always a decision.
             ->strictAuthorization()

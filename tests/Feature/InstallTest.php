@@ -21,6 +21,7 @@ it('installs Kami on a fresh project with its first administrator', function ():
         ->and($ada->kamiRoles())->toBe(['administrator']);
 
     $this->get('/admin/login')->assertOk()->assertHeader('Content-Security-Policy');
+    $this->get('/admin/password-reset/request')->assertOk();
     // The doctor's header probe would reach whatever serves APP_URL on this machine.
     Http::fake(['*' => Http::failedConnection()]);
     $this->artisan('kami:doctor', ['--strict' => true])->assertSuccessful();
