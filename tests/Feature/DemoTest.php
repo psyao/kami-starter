@@ -3,8 +3,10 @@
 declare(strict_types=1);
 
 use App\Content\Home;
+use App\Models\User;
 use Database\Seeders\DemoSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Http;
 use Livewire\Livewire;
 use Psyao\Kami\Content\Actions\SaveEntry;
 use Psyao\Kami\Content\Entry;
@@ -62,5 +64,10 @@ it('leaves a Home an editor published alone', function (): void {
 });
 
 it('leaves kami:doctor nothing to report on the types it declares', function (): void {
+    // The administrator's MFA, which the doctor otherwise warns is not set up yet.
+    withMfa(User::query()->sole());
+    // The doctor's header probe would reach whatever serves APP_URL on this machine.
+    Http::fake(['*' => Http::failedConnection()]);
+
     $this->artisan('kami:doctor', ['--strict' => true])->assertSuccessful();
 });
