@@ -8,3 +8,12 @@
     --font-sans: ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
         'Noto Color Emoji';
 }
+
+/* <x-kami::locales /> ships no CSS: the switcher in the header, the current language marked. */
+.kami-locales ul {
+    @apply flex gap-3 text-sm;
+}
+
+.kami-locales [aria-current] {
+    @apply font-semibold;
+}

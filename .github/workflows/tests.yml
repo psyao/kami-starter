@@ -83,6 +83,13 @@ jobs:
 
       - run: npm run build
 
+      # The page-weight budget's CSS half, gzipped; DemoTest checks the HTML half on a seeded page.
+      - name: CSS within 15 KB gzipped
+        run: |
+          size=$(cat public/build/assets/*.css | gzip -9 | wc -c)
+          echo "CSS: $size bytes gzipped"
+          test "$size" -le 15360
+
       # The server never runs Node: a deploy ships this build with the code.
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
