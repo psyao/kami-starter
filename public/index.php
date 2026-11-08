@@ -12,6 +12,9 @@ if (file_exists($maintenance = __DIR__ . '/../storage/framework/maintenance.php'
     require $maintenance;
 }
 
+// Send a page Kami stored, before Laravel boots...
+(require __DIR__ . '/../vendor/psyao/kami/resources/page-cache.php')(__DIR__ . '/../storage');
+
 // Register the Composer autoloader...
 require __DIR__ . '/../vendor/autoload.php';
 

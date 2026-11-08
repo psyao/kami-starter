@@ -6,6 +6,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Request;
+use Psyao\Kami\Facades\Kami;
 use Psyao\Kami\Support\SecurityHeaders;
 
 return Application::configure(basePath: dirname(__DIR__))
@@ -19,6 +20,9 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->web(append: [SecurityHeaders::class]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
+        // First: error pages render in the URL's Locale. A render callback registered before it and returning a response skips it.
+        Kami::exceptions($exceptions);
+
         $exceptions->shouldRenderJsonWhen(
             fn (Request $request): bool => $request->is('api/*') || $request->expectsJson(),
         );

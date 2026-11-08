@@ -23,6 +23,8 @@
 /public/js/filament
 /public/js/psyao
 /public/media
+/public/sitemap.xml
+/public/sitemaps
 /public/storage
 /storage/*.key
 /storage/pail

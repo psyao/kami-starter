@@ -1,2 +1,3 @@
+# Managed by Kami (kami:install). Delete this line to own this file.
 User-agent: *
-Disallow:
+Disallow: /

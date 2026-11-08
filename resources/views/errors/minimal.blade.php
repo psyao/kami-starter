@@ -1,6 +1,7 @@
-{{-- Every error page extends this layout, Laravel's own 403, 404, 500… included: restyle it to the site's theme.
-     It loads no Vite asset, so it still renders when the build or the application is broken. Its styles sit in
-     public/errors.css: Kami's CSP blocks an inline <style>. --}}
+{{-- The 5xx shell, Laravel's own 500 and 503 included (and its 401 and 402): restyle it to the site's theme. A 500
+     may mean the database or the build is broken, so it reads neither: no x-kami::seo, no Vite asset. Its styles
+     sit in public/errors.css, as Kami's CSP blocks an inline <style>. Maintenance mode's 503 answers before any
+     route, with no security header: keep it static. --}}
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>

@@ -1,4 +1,11 @@
 {
     "Skip to content": "Aller au contenu",
-    "Go to the admin": "Aller à l’admin"
+    "Go to the admin": "Aller à l’admin",
+    "Forbidden": "Accès refusé",
+    "Not Found": "Page introuvable",
+    "Gone": "Page supprimée",
+    "Page Expired": "Page expirée",
+    "Too Many Requests": "Trop de requêtes",
+    "Server Error": "Erreur du serveur",
+    "Service Unavailable": "Service indisponible"
 }
