@@ -28,7 +28,7 @@ To put the site online and deploy it again, follow [Kami's deployment guide](htt
 - `lang/{en,fr}/kami-types.php`: the admin's labels for the types; `lang/fr.json`: the layout's strings in French.
 - `resources/views/components/layouts/site.blade.php`: a minimal accessible layout (`lang`, skip link, landmarks), built by Vite and Tailwind, with no JavaScript, no web font and nothing inline. `resources/views/kami/home.blade.php` and `page.blade.php` render the types in it.
 - `public/.htaccess`: no trailing-slash redirect before Laravel, so a former URL costs one 301.
-- `resources/views/errors/`: one layout for every error page, without Vite assets; its styles are in `public/errors.css`.
+- `resources/views/errors/`: 4xx pages in the site's layout; 500 and 503 in `minimal.blade.php`, a shell with no database query and no Vite asset, styled by `public/errors.css`. `bootstrap/app.php` calls `Kami::exceptions()`, so they answer in the URL's Locale.
 - `.github/workflows/tests.yml`: Pint, Larastan, Rector and the tests on every pull request, and the Vite + Tailwind build as an artifact, so the server never runs Node.
 - `boost.json`: Kami's and Filament's guidelines and skills, preselected for `boost:install`, which the installer runs without prompting for them.
 - `lefthook.yml`, `pint.json`, `rector.php`, `phpstan.neon.dist`: Kami's rules and level, from the package. Hooks install with `composer install` once the site is a Git repository.

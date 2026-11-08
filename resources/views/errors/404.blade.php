@@ -1,1 +1,1 @@
-@include('errors::4xx', ['title' => __('Not Found')])
+@include('errors::4xx')

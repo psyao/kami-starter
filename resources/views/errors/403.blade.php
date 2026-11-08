@@ -1,1 +1,1 @@
-@include('errors::4xx', ['title' => __('Forbidden')])
+@include('errors::4xx')
