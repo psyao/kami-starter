@@ -8,7 +8,8 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>@if ($title){{ $title }} · @endif{{ config('app.name') }}</title>
+        {{-- Title, description, canonical, robots, hreflang and Open Graph: Kami's values on its pages, the props elsewhere. --}}
+        <x-kami::seo :title="$title" />
 
         @vite('resources/css/app.css')
     </head>
@@ -20,8 +21,9 @@
         </a>
 
         <header class="border-b border-zinc-200 dark:border-zinc-700">
-            <div class="mx-auto max-w-2xl px-6 py-4">
+            <div class="mx-auto flex max-w-2xl items-center justify-between gap-4 px-6 py-4">
                 <a href="{{ url('/') }}" class="font-semibold underline-offset-4 hover:underline">{{ config('app.name') }}</a>
+                <x-kami::locales />
             </div>
         </header>
 

@@ -71,3 +71,10 @@ it('leaves kami:doctor nothing to report on the types it declares', function ():
 
     $this->artisan('kami:doctor', ['--strict' => true])->assertSuccessful();
 });
+
+it('keeps a seeded page within its weight budget', function (): void {
+    // The HTML half of the page-weight budget; CI checks the CSS half on the build.
+    $this->seed(DemoSeeder::class);
+
+    expect(mb_strlen(gzencode($this->get('/about')->assertOk()->getContent(), 9), '8bit'))->toBeLessThanOrEqual(30 * 1024);
+});

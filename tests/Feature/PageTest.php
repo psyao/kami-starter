@@ -45,3 +45,12 @@ it('escapes the body and marks its Fallback with lang', function (): void {
     expect($body?->textContent)->toBe('Un site <b>Kami</b>.')
         ->and($html->querySelector('main b'))->toBeNull();
 });
+
+it('gives the head Kami\'s title, canonical URL and language links', function (): void {
+    $html = HTMLDocument::createFromString($this->get('/en/welcome')->getContent(), LIBXML_NOERROR);
+
+    expect($html->querySelector('head title')?->textContent)->toStartWith('Welcome')
+        ->and($html->querySelector('head link[rel="canonical"]')?->getAttribute('href'))->toEndWith('/en/welcome')
+        ->and($html->querySelector('head link[rel="alternate"][hreflang="fr"]')?->getAttribute('href'))->toEndWith('/bienvenue')
+        ->and($html->querySelector('header nav.kami-locales a[hreflang="fr"]')?->getAttribute('href'))->toEndWith('/bienvenue');
+});
