@@ -24,6 +24,9 @@ it('installs Kami on a fresh project with its first administrator', function ():
     $this->get('/admin/password-reset/request')->assertOk();
     // The doctor's header probe would reach whatever serves APP_URL on this machine.
     Http::fake(['*' => Http::failedConnection()]);
+    // Until the administrator sets MFA up at their first sign-in, the doctor warns.
+    $this->artisan('kami:doctor', ['--strict' => true])->assertFailed();
+    withMfa($ada);
     $this->artisan('kami:doctor', ['--strict' => true])->assertSuccessful();
 });
 
@@ -31,6 +34,11 @@ it('lets only a Kami Role holder into the admin', function (): void {
     $this->artisan('kami:install', ['--no-interaction' => true, '--email' => 'ada@example.test', '--name' => 'Ada'])
         ->assertSuccessful();
 
-    $this->actingAs(User::query()->sole())->get('/admin')->assertOk();
+    $ada = User::query()->sole();
+    // A User who may manage Users sets MFA up before any other page.
+    $this->actingAs($ada)->get('/admin')->assertRedirect('/admin/multi-factor-authentication/set-up');
+    withMfa($ada);
+    // A fresh instance: the User caches its MFA row.
+    $this->actingAs($ada->fresh())->get('/admin')->assertOk();
     $this->actingAs(User::factory()->create())->get('/admin')->assertForbidden();
 });

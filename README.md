@@ -12,7 +12,7 @@ cd site
 php artisan kami:install
 ```
 
-`kami:install` asks for the first administrator, who signs in at `/admin`; so does `composer setup`, which also builds the front. Without a terminal, pass the administrator's details as Kami's [installation guide](https://github.com/psyao/kami/blob/main/docs/guide/installation.md#the-first-user) shows. The home page answers 404 until it is published: publish it in the admin, or seed the demo with `php artisan db:seed --class=DemoSeeder`, which `composer setup` runs. The demo publishes it and a Page with two Tags, at `/about` in French and `/en/about` in English.
+`kami:install` asks for the first administrator, who signs in at `/admin` and sets an authenticator app up there; so does `composer setup`, which also builds the front. Without a terminal, pass the administrator's details as Kami's [installation guide](https://github.com/psyao/kami/blob/main/docs/guide/installation.md#the-first-user) shows. The home page answers 404 until it is published: publish it in the admin, or seed the demo with `php artisan db:seed --class=DemoSeeder`, which `composer setup` runs. The demo publishes it and a Page with two Tags, at `/about` in French and `/en/about` in English.
 
 To put the site online and deploy it again, follow [Kami's deployment guide](https://github.com/psyao/kami/blob/main/docs/guide/deployment.md). Accept Laravel Boost when the installer offers it, or run `php artisan boost:install` later: either gives a coding agent Laravel's, Filament's and Kami's guidelines and skills.
 
@@ -21,7 +21,8 @@ To put the site online and deploy it again, follow [Kami's deployment guide](htt
 - `routes/web.php`: `Kami::routes()`, the fallback route that serves every Entry at its Path, after the site's own routes.
 - `bootstrap/app.php`: Kami's front security headers and CSP on the `web` group too.
 - `app/Providers/Filament/AdminPanelProvider.php`: the panel, with `KamiPlugin`, strict authorization, Kami's local avatar provider and Kami's admin security headers.
-- `app/Models/User.php`: `KamiUser` with `HasKamiRoles`; only a User holding a Kami Role gets into the admin.
+- `app/Models/User.php`: `KamiUser` with `HasKamiRoles`, and Filament's MFA contracts with `HasKamiMfa`; only a User holding a Kami Role gets into the admin, and one who may manage Users sets an authenticator app up first.
+- `app/Filament/Resources/Users/`: the Users screen, with Kami's Roles field and a one-time link for each new User to set their password; `app/Policies/UserPolicy.php` opens it to `kami.users.manage` only; `lang/{en,fr}/users.php` are its labels. The first administrator comes from `kami:install`, later Users from this screen or `kami:user:grant`.
 - `config/kami.php`: three example types in `app/Content`, a `Home` Singleton at `/`, a `Page` and the `Tag` Taxonomy its `tags` Field links to; two Locales (`fr`, the default, and `en`) and the `administrator` Role. `database/migrations/*_create_kami_type_*_table.php` are their tables, written by `kami:make:migration`; a type with no Field, as `Tag`, has none.
 - `database/seeders/DemoSeeder.php`: the demo, through `SaveEntry`. Delete it when the site has its own content. To remove a type you have migrated, delete it from `config/kami.php` and drop its table with `ContentMigrator::dropType()` in a migration.
 - `lang/{en,fr}/kami-types.php`: the admin's labels for the types; `lang/fr.json`: the layout's strings in French.
@@ -31,6 +32,6 @@ To put the site online and deploy it again, follow [Kami's deployment guide](htt
 - `.github/workflows/tests.yml`: Pint, Larastan, Rector and the tests on every pull request, and the Vite + Tailwind build as an artifact, so the server never runs Node.
 - `boost.json`: Kami's and Filament's guidelines and skills, preselected for `boost:install`, which the installer runs without prompting for them.
 - `lefthook.yml`, `pint.json`, `rector.php`, `phpstan.neon.dist`: Kami's rules and level, from the package. Hooks install with `composer install` once the site is a Git repository.
-- `tests/ArchTest.php`: Filament stays in `app/Filament`, `app/Providers/Filament` and the `User` model (its `FilamentUser` contract), so a Filament major touches only them.
+- `tests/ArchTest.php`: Filament stays in `app/Filament`, `app/Providers/Filament` and the `User` model (its `FilamentUser` and MFA contracts), so a Filament major touches only them.
 
 `composer analyse` runs Larastan, `composer test` the tests.
