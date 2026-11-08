@@ -40,5 +40,6 @@ it('lets only a Kami Role holder into the admin', function (): void {
     withMfa($ada);
     // A fresh instance: the User caches its MFA row.
     $this->actingAs($ada->fresh())->get('/admin')->assertOk();
-    $this->actingAs(User::factory()->create())->get('/admin')->assertForbidden();
+    // The 403 renders in the site's layout, which needs a Vite build the tests don't have.
+    $this->withoutVite()->actingAs(User::factory()->create())->get('/admin')->assertForbidden();
 });
