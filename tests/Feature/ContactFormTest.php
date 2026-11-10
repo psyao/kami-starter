@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use Database\Seeders\DemoSeeder;
-use Dom\HTMLDocument;
 use Illuminate\Cache\RateLimiter as Limiter;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Cache;
@@ -28,11 +27,6 @@ afterEach(function (): void {
     unset($_SERVER['KAMI_ADMIN_PASSWORD']);
 });
 
-function contactPage(string $content): HTMLDocument
-{
-    return HTMLDocument::createFromString($content, LIBXML_NOERROR);
-}
-
 /**
  * A browser's POST from the home page at `$path`, with the `_kami_origin` its form carries: a valid message unless overridden.
  *
@@ -40,7 +34,7 @@ function contactPage(string $content): HTMLDocument
  */
 function sendContact(string $path, array $values = []): TestResponse
 {
-    $origin = contactPage(test()->get($path)->assertOk()->getContent())->querySelector('input[name="_kami_origin"]')?->getAttribute('value');
+    $origin = html(test()->get($path)->assertOk()->getContent())->querySelector('input[name="_kami_origin"]')?->getAttribute('value');
 
     return test()->withHeaders(['Sec-Fetch-Site' => 'same-origin'])->post('/kami/forms/contact', [
         '_kami_origin' => $origin,
@@ -52,7 +46,7 @@ function sendContact(string $path, array $values = []): TestResponse
 }
 
 it('renders the contact form on the home page, each field labelled', function (string $path, string $label): void {
-    $html = contactPage($this->get($path)->assertOk()->getContent());
+    $html = html($this->get($path)->assertOk()->getContent());
 
     expect($html->querySelector('form#contact')?->getAttribute('action'))->toBe('/kami/forms/contact')
         ->and($html->querySelector('label[for="email"]')?->textContent)->toBe($label)
@@ -72,7 +66,7 @@ it('stores a valid message and confirms it on the page', function (): void {
         'data' => ['name' => 'Grace Hopper', 'email' => 'grace@example.com', 'message' => 'Hello, I would like to talk.'],
     ]);
 
-    $html = contactPage($this->get('/en?sent=contact')->assertOk()->getContent());
+    $html = html($this->get('/en?sent=contact')->assertOk()->getContent());
     expect($html->querySelector('#contact[role="status"]')?->textContent)->toBe('Thank you, your message is sent.')
         ->and($html->querySelector('form#contact'))->toBeNull();
 });
@@ -80,7 +74,7 @@ it('stores a valid message and confirms it on the page', function (): void {
 it('renders a refused message again in French, its errors tied to their field', function (): void {
     $response = sendContact('/', ['email' => ''])->assertStatus(422);
 
-    $html = contactPage($response->getContent());
+    $html = html($response->getContent());
     $email = $html->querySelector('#email');
     expect($html->querySelector('.kami-form-errors[role="alert"] a[href="#email"]')?->textContent)->toBe('Le champ adresse e-mail est obligatoire.')
         ->and($email?->getAttribute('aria-invalid'))->toBe('true')

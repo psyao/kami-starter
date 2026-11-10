@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use Dom\HTMLDocument;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Vite;
 use Illuminate\Support\Facades\Route;
@@ -17,16 +16,11 @@ beforeEach(function (): void {
     app()->setLocale('de');
 });
 
-function errorPage(string $content): HTMLDocument
-{
-    return HTMLDocument::createFromString($content, LIBXML_NOERROR);
-}
-
 it('renders a 404 in the layout in the URL\'s Locale', function (string $path, string $lang, string $title): void {
     $this->withoutVite();
 
     $response = $this->get($path)->assertNotFound();
-    $html = errorPage($response->getContent());
+    $html = html($response->getContent());
 
     expect($html->documentElement->getAttribute('lang'))->toBe($lang)
         ->and($html->querySelector('title')?->textContent)->toStartWith($title)
@@ -47,7 +41,7 @@ it('renders a 500 in the shell, with no build and under the CSP', function (stri
         ->assertInternalServerError()
         ->assertHeader('Content-Security-Policy')
         ->assertDontSee('Secret internals');
-    $html = errorPage($response->getContent());
+    $html = html($response->getContent());
 
     expect($html->documentElement->getAttribute('lang'))->toBe($lang)
         ->and($html->querySelector('h1')?->textContent)->toBe("500 · {$title}")
@@ -63,7 +57,7 @@ it('renders maintenance mode\'s 503 in the shell, in the URL\'s Locale', functio
     app()->maintenanceMode()->activate([]);
 
     try {
-        $html = errorPage($this->get($path)->assertServiceUnavailable()->getContent());
+        $html = html($this->get($path)->assertServiceUnavailable()->getContent());
     } finally {
         app()->maintenanceMode()->deactivate();
     }

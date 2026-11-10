@@ -9,7 +9,9 @@
         <a href="{{ url('/admin') }}" class="underline underline-offset-4">{{ __('Go to the admin') }}</a>
     </p>
 
-    {{-- App\Forms\ContactForm. Each input's id is its name: the error summary links to it. --}}
+    {{-- App\Forms\ContactForm; removing it from kami.forms means removing this section too. Each input's id is its name:
+         the error summary links to it. No maxlength on the textarea: a browser counts a line break as one character, the
+         server as two. --}}
     <section class="mt-12" aria-labelledby="contact-heading">
         <h2 id="contact-heading" class="text-2xl font-semibold">{{ Kami::form('contact')->label() }}</h2>
 
@@ -39,7 +41,7 @@
 
                 <div>
                     <label for="message" class="block font-medium">{{ __('Message') }}</label>
-                    <textarea id="message" name="message" rows="6" required maxlength="5000"
+                    <textarea id="message" name="message" rows="6" required
                         class="mt-1 w-full rounded border border-zinc-500 bg-transparent px-3 py-2"
                         @error('message') aria-invalid="true" aria-describedby="message-error" @enderror>{{ old('message') }}</textarea>
                     @error('message')<p id="message-error" class="mt-1 text-red-700 dark:text-red-300">{{ $message }}</p>@enderror
