@@ -7,5 +7,10 @@
     "Page Expired": "Page expirée",
     "Too Many Requests": "Trop de requêtes",
     "Server Error": "Erreur du serveur",
-    "Service Unavailable": "Service indisponible"
+    "Service Unavailable": "Service indisponible",
+    "All fields are required.": "Tous les champs sont obligatoires.",
+    "Name": "Nom",
+    "Email address": "Adresse e-mail",
+    "Send": "Envoyer",
+    "Thank you, your message is sent.": "Merci, votre message est envoyé."
 }
