@@ -43,6 +43,7 @@ return [
             'kami.entries.*.restore',
             'kami.media.*',
             'kami.menus.manage',
+            'kami.form-submissions.view',
         ],
     ],
 
