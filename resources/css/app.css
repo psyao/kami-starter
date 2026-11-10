@@ -17,3 +17,20 @@
 .kami-locales [aria-current] {
     @apply font-semibold;
 }
+
+/* <x-kami::form.errors /> ships no CSS: the summary of a refused Submission, above the fields. */
+.kami-form-errors {
+    @apply rounded border-2 border-red-700 p-4 dark:border-red-300;
+}
+
+.kami-form-errors-heading {
+    @apply text-lg font-semibold;
+}
+
+.kami-form-errors ul {
+    @apply mt-2 list-disc space-y-2 pl-6;
+}
+
+.kami-form-errors a {
+    @apply underline underline-offset-4;
+}

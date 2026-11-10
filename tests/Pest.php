@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Models\User;
+use Dom\HTMLDocument;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
@@ -15,4 +16,10 @@ function withMfa(User $user): User
     DB::table('kami_user_mfa')->insert(['user_id' => $user->getKey(), 'secret' => Crypt::encryptString('JBSWY3DPEHPK3PXP')]);
 
     return $user;
+}
+
+/** A response's HTML, parsed leniently, to query it as a browser would. */
+function html(string $content): HTMLDocument
+{
+    return HTMLDocument::createFromString($content, LIBXML_NOERROR);
 }
