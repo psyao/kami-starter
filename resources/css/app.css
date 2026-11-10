@@ -14,6 +14,11 @@
     @apply flex gap-3 text-sm;
 }
 
+/* Block box with padding: at least 24 px high (WCAG 2.2 SC 2.5.8), not just the 17 px of an inline link. */
+.kami-locales a {
+    @apply inline-block py-1;
+}
+
 .kami-locales [aria-current] {
     @apply font-semibold;
 }
