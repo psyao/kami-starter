@@ -3,6 +3,7 @@
          xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
          bootstrap="vendor/autoload.php"
          colors="true"
+         defaultTestSuite="Arch,Feature"
 >
     <testsuites>
         <testsuite name="Arch">
@@ -10,6 +11,11 @@
         </testsuite>
         <testsuite name="Feature">
             <directory>tests/Feature</directory>
+        </testsuite>
+        <!-- Chromium through Playwright, run by CI's browser job alone: `composer test` and pre-push leave it out.
+             Locally: `npm run build`, `npx playwright install chromium`, then `vendor/bin/pest tests/Browser`. -->
+        <testsuite name="Browser">
+            <directory>tests/Browser</directory>
         </testsuite>
     </testsuites>
     <source>

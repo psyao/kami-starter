@@ -16,13 +16,14 @@
     <body class="flex min-h-screen flex-col bg-white font-sans text-zinc-900 antialiased dark:bg-zinc-900 dark:text-zinc-50">
         <x-kami::preview-banner />
 
-        <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:rounded focus:bg-white focus:px-4 focus:py-2 focus:text-zinc-900 focus:underline">
+        {{-- Once focused, in the flow above the header rather than on top of it: it covers no other link. --}}
+        <a href="#main" class="sr-only focus:not-sr-only focus:m-4 focus:block focus:w-fit focus:rounded focus:bg-white focus:px-4 focus:py-2 focus:text-zinc-900 focus:underline">
             {{ __('Skip to content') }}
         </a>
 
         <header class="border-b border-zinc-200 dark:border-zinc-700">
             <div class="mx-auto flex max-w-2xl items-center justify-between gap-4 px-6 py-4">
-                <a href="{{ url('/') }}" class="font-semibold underline-offset-4 hover:underline">{{ config('app.name') }}</a>
+                <a href="{{ url('/') }}" class="inline-block py-1 font-semibold underline-offset-4 hover:underline">{{ config('app.name') }}</a>
                 <x-kami::locales />
             </div>
         </header>

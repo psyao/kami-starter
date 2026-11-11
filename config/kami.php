@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Content\Home;
 use App\Content\Page;
 use App\Content\Tag;
+use App\Forms\ContactForm;
 
 return [
 
@@ -15,6 +16,14 @@ return [
         Home::class,
         Page::class,
         Tag::class,
+    ],
+
+    /*
+    | The site's front Forms: classes extending `Psyao\Kami\Forms\Form`, each posting to `POST /kami/forms/{handle}` (ADR 0015).
+    | Labels come from the `kami-forms` translation file, field labels from `validation.attributes`.
+    */
+    'forms' => [
+        ContactForm::class,
     ],
 
     /*
@@ -34,6 +43,7 @@ return [
             'kami.entries.*.restore',
             'kami.media.*',
             'kami.menus.manage',
+            'kami.form-submissions.view',
         ],
     ],
 

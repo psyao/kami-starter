@@ -96,3 +96,49 @@ jobs:
           name: build
           path: public/build
           if-no-files-found: error
+
+  browser:
+    name: Browser (Chromium, axe)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962 # 2.40.0
+        with:
+          php-version: '8.5'
+          extensions: dom, curl, libxml, mbstring, zip, pdo, sqlite, pdo_sqlite, bcmath, intl, fileinfo, gd
+          coverage: none
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: lts/*
+
+      - name: Install dependencies
+        run: |
+          composer install --prefer-dist --no-interaction --no-progress
+          cp .env.example .env
+          php artisan key:generate
+          npm ci --no-fund
+
+      # The pages are audited with the built stylesheet: contrast and target sizes depend on it.
+      - run: npm run build
+
+      # No --with-deps: the runner image's Google Chrome already brings Chromium's libraries.
+      - name: Install Playwright Chromium
+        run: npx playwright install chromium
+
+      - name: Browser suite
+        run: vendor/bin/pest --testsuite=Browser --ci --trace
+
+      # A failed test leaves a screenshot and a Playwright trace (console, network, DOM): open the trace on trace.playwright.dev.
+      - name: Upload screenshots and traces
+        if: failure()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: browser-failures
+          path: |
+            tests/Browser/Screenshots
+            tests/Browser/Traces
