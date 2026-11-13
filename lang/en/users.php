@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 // The host's Users screen.
 return [
-    'label' => 'User',
+    'label' => 'user',
     'plural_label' => 'Users',
     'name' => 'Name',
     'email' => 'Email',
