@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 // L'écran Utilisateurs de l'hôte.
 return [
-    'label' => 'Utilisateur',
+    'label' => 'utilisateur',
     'plural_label' => 'Utilisateurs',
     'name' => 'Nom',
     'email' => 'E-mail',
