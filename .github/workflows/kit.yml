@@ -1,0 +1,104 @@
+# The starter kit's own checks, which a site does not need: .gitattributes keeps this file out of `laravel new`.
+name: kit
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # What each kami:make:* generator writes goes through the kit's gates as a site's first commit would (psyao/kami#546).
+  # It runs on the Kami composer.json requires: dev-main on `next`, a release on `main`.
+  generators:
+    name: Generators through the kit's gates
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962 # 2.40.0
+        with:
+          php-version: '8.5'
+          extensions: dom, curl, libxml, mbstring, zip, pdo, sqlite, pdo_sqlite, bcmath, intl, fileinfo, gd
+          coverage: none
+
+      - name: Install dependencies
+        run: |
+          composer install --prefer-dist --no-interaction --no-progress
+          cp .env.example .env
+          php artisan key:generate
+
+      # Every generator in each of its forms. kami:make:migration writes the kit's own type tables again, their migrations
+      # deleted first: a type a generator just wrote has no Field, so no table to write.
+      - name: Run the generators
+        id: generate
+        run: |
+          php artisan kami:make:type Article
+          php artisan kami:make:type Hero --singleton
+          php artisan kami:make:type Footer --global-set
+          php artisan kami:make:type Topic --taxonomy
+          php artisan kami:make:form Quote
+          rm database/migrations/*_create_kami_type_*_table.php
+          touch database/database.sqlite
+          php artisan migrate --force --no-interaction
+          php artisan kami:make:migration --no-interaction
+          git ls-files --others --exclude-standard -- '*.php' ':!*.blade.php' > "$RUNNER_TEMP/generated"
+          cat "$RUNNER_TEMP/generated"
+          grep -q '^database/migrations/' "$RUNNER_TEMP/generated"
+
+      - name: Rector
+        if: ${{ !cancelled() && steps.generate.outcome == 'success' }}
+        run: xargs -a "$RUNNER_TEMP/generated" vendor/bin/rector process --dry-run --no-progress-bar
+
+      - name: Pint
+        if: ${{ !cancelled() && steps.generate.outcome == 'success' }}
+        run: xargs -a "$RUNNER_TEMP/generated" vendor/bin/pint --test
+
+      - name: Larastan
+        if: ${{ !cancelled() && steps.generate.outcome == 'success' }}
+        run: xargs -a "$RUNNER_TEMP/generated" vendor/bin/phpstan analyse --no-progress --error-format=github
+
+  # Kami's shared-hosting Smoke (Kami's ADR 0039) on this pull request's branch, so a change that breaks it fails here,
+  # not on Kami's next pull request (psyao/kami#545). Kami's `main` is the Kami the smoke installs.
+  smoke:
+    name: Kami's Smoke (Apache + FPM, MariaDB 10.11)
+    if: ${{ github.event_name == 'pull_request' && github.base_ref == 'next' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 25 # the first runs build the PHP image: the kit's cache starts empty
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: psyao/kami
+          persist-credentials: false
+
+      - uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
+
+      # As in Kami's own Smoke job: the cached PHP image saves most of the build.
+      - name: PHP image cache
+        uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
+        with:
+          context: tests/Smoke
+          tags: kami-smoke-php
+          load: true
+          cache-from: type=gha
+          cache-to: type=gha,ignore-error=true
+
+      # The branch's head, read from its repository: Packagist may not know it yet.
+      - name: Shared-hosting smoke
+        run: tests/Smoke/run.sh
+        env:
+          STARTER_VERSION: dev-${{ github.head_ref }}
+          STARTER_REPOSITORY: '{"type":"vcs","url":"${{ github.event.pull_request.head.repo.clone_url }}","no-api":true}'
+
+      - name: Stack logs
+        if: failure()
+        run: docker compose -f tests/Smoke/compose.yaml logs
