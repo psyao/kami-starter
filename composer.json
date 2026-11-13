@@ -11,7 +11,7 @@
         "filament/filament": "^5.10",
         "laravel/framework": "^13.32",
         "laravel/tinker": "^3.0",
-        "psyao/kami": "^0.8"
+        "psyao/kami": "^0.9"
     },
     "require-dev": {
         "driftingly/rector-laravel": "^2.7",

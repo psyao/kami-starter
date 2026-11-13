@@ -6,6 +6,8 @@
 *.md diff=markdown
 *.php diff=php
 
-# `composer create-project` unpacks this archive, and the site needs all of it, CI workflow included.
-# Only a stray composer.lock stays out: it would pin every new site to an old Kami. A site commits its own.
+# `composer create-project` unpacks this archive, and the site needs all of it, its CI workflow included.
+# A stray composer.lock stays out: it would pin every new site to an old Kami. A site commits its own.
 /composer.lock export-ignore
+# The kit's own checks, Kami's Smoke and the generators, are no site's.
+/.github/workflows/kit.yml export-ignore
