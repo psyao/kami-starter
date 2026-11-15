@@ -27,9 +27,13 @@
     @apply inline-block py-1;
 }
 
-.kami-menu a,
-.kami-pagination a {
+.kami-menu a {
     @apply underline-offset-4 hover:underline;
+}
+
+/* In the page's content, as its other links: underlined, not told apart by colour alone. */
+.kami-pagination a {
+    @apply underline underline-offset-4;
 }
 
 .kami-locales [aria-current],

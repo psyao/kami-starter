@@ -63,13 +63,30 @@ final class DemoSeeder extends Seeder
             'body' => 'A Page, with its Tags in the order picked.',
         ], $page, 'en');
 
-        foreach ([
-            ['Kami est installé', 'Kami is installed', 'Une Actualité : son Archive les liste de la plus récente à la plus ancienne.', 'A News item: its Archive lists them newest first.', now()->subDay()],
-            ['Le menu principal', 'The main menu', 'Le menu en haut de chaque page se modifie dans l’admin.', 'The menu at the top of every page is edited in the admin.', now()],
-        ] as [$fr, $en, $frBody, $enBody, $publishedAt]) {
-            $news = $save->handle(News::class, ['title' => $fr, 'status' => 'published', 'published_at' => $publishedAt, 'body' => $frBody]);
-            $save->handle(News::class, ['title' => $en, 'status' => 'published', 'published_at' => $publishedAt, 'body' => $enBody], $news, 'en');
-        }
+        // Two News items a day apart, which their Archive lists newest first.
+        $news = $save->handle(News::class, [
+            'title' => 'Kami est installé',
+            'status' => 'published',
+            'published_at' => now()->subDay(),
+            'body' => 'Une Actualité : son Archive les liste de la plus récente à la plus ancienne.',
+        ]);
+        $save->handle(News::class, [
+            'title' => 'Kami is installed',
+            'status' => 'published',
+            'published_at' => now()->subDay(),
+            'body' => 'A News item: its Archive lists them newest first.',
+        ], $news, 'en');
+
+        $news = $save->handle(News::class, [
+            'title' => 'Le menu principal',
+            'status' => 'published',
+            'body' => 'Le menu en haut de chaque page se modifie dans l’admin.',
+        ]);
+        $save->handle(News::class, [
+            'title' => 'The main menu',
+            'status' => 'published',
+            'body' => 'The menu at the top of every page is edited in the admin.',
+        ], $news, 'en');
 
         $menu->handle('primary', ['entry' => $home, 'label' => ['fr' => 'Accueil', 'en' => 'Home']]);
         $menu->handle('primary', ['entry' => $page]);

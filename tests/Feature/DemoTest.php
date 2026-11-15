@@ -14,6 +14,8 @@ use Psyao\Kami\Content\Entry;
 uses(RefreshDatabase::class);
 
 beforeEach(function (): void {
+    // The demo publishes its News relative to now.
+    $this->freezeTime();
     $this->withoutVite();
     Livewire::flushState();
     $_SERVER['KAMI_ADMIN_PASSWORD'] = 'correct-horse-battery';
