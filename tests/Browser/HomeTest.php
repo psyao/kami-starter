@@ -23,4 +23,5 @@ it('passes axe at its strictest level, light, dark and on a phone, skip link foc
 })->with([
     'French, the default Locale' => '/',
     'English' => '/en',
+    'the News Archive' => '/news',
 ]);

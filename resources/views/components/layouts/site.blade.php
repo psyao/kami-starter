@@ -22,8 +22,10 @@
         </a>
 
         <header class="border-b border-zinc-200 dark:border-zinc-700">
-            <div class="mx-auto flex max-w-2xl items-center justify-between gap-4 px-6 py-4">
+            <div class="mx-auto flex max-w-2xl flex-wrap items-center justify-between gap-x-6 gap-y-2 px-6 py-4">
                 <a href="{{ url('/') }}" class="inline-block py-1 font-semibold underline-offset-4 hover:underline">{{ config('app.name') }}</a>
+                {{-- Filled in the admin, under Menus; nothing while it is empty. --}}
+                <x-kami::menu handle="primary" />
                 <x-kami::locales />
             </div>
         </header>
