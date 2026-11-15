@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Content\Home;
+use App\Content\News;
 use App\Content\Page;
 use App\Content\Tag;
 use App\Forms\ContactForm;
@@ -15,6 +16,7 @@ return [
     'types' => [
         Home::class,
         Page::class,
+        News::class,
         Tag::class,
     ],
 
@@ -24,6 +26,14 @@ return [
     */
     'forms' => [
         ContactForm::class,
+    ],
+
+    /*
+    | The site's Menus, by handle, each with its `depth` (1 to 3, 1 by default); `<x-kami::menu handle="primary" />` renders one.
+    | Editors fill them in the admin with `kami.menus.manage`. Labels come from the `kami-menus` translation file.
+    */
+    'menus' => [
+        'primary' => ['depth' => 1],
     ],
 
     /*

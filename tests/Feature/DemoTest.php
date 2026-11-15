@@ -14,6 +14,8 @@ use Psyao\Kami\Content\Entry;
 uses(RefreshDatabase::class);
 
 beforeEach(function (): void {
+    // The demo publishes its News relative to now.
+    $this->freezeTime();
     $this->withoutVite();
     Livewire::flushState();
     $_SERVER['KAMI_ADMIN_PASSWORD'] = 'correct-horse-battery';
@@ -45,6 +47,24 @@ it('shows a Page\'s Tags in pick order', function (): void {
     $this->get('/about')->assertSeeInOrder(['<li>Kami</li>', '<li>Demo</li>'], false);
 });
 
+it('lists the News in their Archive, newest first, in both Locales', function (string $path, array $titles): void {
+    $this->seed(DemoSeeder::class);
+
+    $this->get($path)->assertOk()->assertSeeInOrder($titles);
+})->with([
+    'French' => ['/news', ['Le menu principal', 'Kami est installé']],
+    'English' => ['/en/news', ['The main menu', 'Kami is installed']],
+]);
+
+it('links the home page, the Page and the News Archive in the primary Menu', function (string $path, array $links): void {
+    $this->seed(DemoSeeder::class);
+
+    $this->get($path)->assertOk()->assertSeeInOrder($links, false);
+})->with([
+    'French' => ['/news', ['class="kami-menu"', '">Accueil</a>', '/about">À propos</a>', '/news" aria-current="page">Actualités</a>', '</nav>']],
+    'English' => ['/en/about', ['class="kami-menu"', '/en">Home</a>', '/en/about" aria-current="page">About</a>', '/en/news">News</a>', '</nav>']],
+]);
+
 it('touches nothing on a second run', function (): void {
     $this->seed(DemoSeeder::class);
     $entries = Entry::query()->withUnpublished()->count();
@@ -63,7 +83,8 @@ it('leaves a Home an editor published alone', function (): void {
     $this->get('/')->assertOk()->assertSee('Edited');
 });
 
-it('leaves kami:doctor nothing to report on the types it declares', function (): void {
+it('leaves kami:doctor nothing to report on the types and Menu it declares, demo seeded', function (): void {
+    $this->seed(DemoSeeder::class);
     // The administrator's MFA, which the doctor otherwise warns is not set up yet.
     withMfa(User::query()->sole());
     // The doctor's header probe would reach whatever serves APP_URL on this machine.

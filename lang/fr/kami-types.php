@@ -22,4 +22,11 @@ return [
             'tags' => ['label' => 'Étiquettes'],
         ],
     ],
+    'news' => [
+        'label' => 'Actualité',
+        'plural' => 'Actualités',
+        'fields' => [
+            'body' => ['label' => 'Texte', 'help' => 'Texte brut ; les retours à la ligne sont conservés.'],
+        ],
+    ],
 ];

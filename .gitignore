@@ -26,6 +26,7 @@
 /public/sitemap.xml
 /public/sitemaps
 /public/storage
+/public/vendor/kami
 /storage/*.key
 /storage/pail
 /vendor

@@ -22,4 +22,11 @@ return [
             'tags' => ['label' => 'Tags'],
         ],
     ],
+    'news' => [
+        'label' => 'News item',
+        'plural' => 'News',
+        'fields' => [
+            'body' => ['label' => 'Text', 'help' => 'Plain text; line breaks are kept.'],
+        ],
+    ],
 ];
