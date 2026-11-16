@@ -9,17 +9,35 @@
         'Noto Color Emoji';
 }
 
-/* <x-kami::locales /> ships no CSS: the switcher in the header, the current language marked. */
+/* <x-kami::locales />, <x-kami::menu /> and <x-kami::pagination /> ship no CSS: the language switcher and the primary Menu
+   in the header, the current language and page marked, and an Archive's previous and next links. */
 .kami-locales ul {
     @apply flex gap-3 text-sm;
 }
 
+.kami-menu ul,
+.kami-pagination ul {
+    @apply flex flex-wrap gap-x-4;
+}
+
 /* Block box with padding: at least 24 px high (WCAG 2.2 SC 2.5.8), not just an inline link's text height. */
-.kami-locales a {
+.kami-locales a,
+.kami-menu a,
+.kami-pagination a {
     @apply inline-block py-1;
 }
 
-.kami-locales [aria-current] {
+.kami-menu a {
+    @apply underline-offset-4 hover:underline;
+}
+
+/* In the page's content, as its other links: underlined, not told apart by colour alone. */
+.kami-pagination a {
+    @apply underline underline-offset-4;
+}
+
+.kami-locales [aria-current],
+.kami-menu [aria-current] {
     @apply font-semibold;
 }
 
